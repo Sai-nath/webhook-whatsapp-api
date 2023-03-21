@@ -83,13 +83,28 @@ app.post("/webhook",(req,res)=>{ //i want some
                axios({
                    method:"POST",
                    url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
-                   data:{
-                       messaging_product:"whatsapp",
-                       to:from,
-                       text:{
-                        body: "👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2. Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit,your message is "+msg_body
-                       }
-                   },
+                   data: {
+                    messaging_product: 'whatsapp',
+                    recipient: {
+                      id: from
+                    },
+                    message: {
+                      attachment: {
+                        type: 'template',
+                        payload: {
+                          template_type: 'button',
+                          text: menu.body,
+                          buttons: menu.options.map(option => {
+                            return {
+                              type: 'postback',
+                              title: option.text,
+                              payload: option.value
+                            };
+                          })
+                        }
+                      }
+                    }
+                  },
                    headers:{
                        "Content-Type":"application/json"
                    }
