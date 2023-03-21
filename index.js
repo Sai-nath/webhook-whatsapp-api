@@ -8,6 +8,7 @@ const app=express().use(body_parser.json());
 const token=process.env.TOKEN;
 const mytoken=process.env.MYTOKEN;//Sainath token
 
+
 app.listen(process.env.PORT,()=>{
     console.log("webhook is listening");
 });
@@ -59,7 +60,9 @@ app.post("/webhook",(req,res)=>{ //i want some
                        messaging_product:"whatsapp",
                        to:from,
                        text:{
-                           body:"Hi.. I'm Sainath, your message is "+msg_body
+                   
+                           body:"Hi.. I'm Sainath, your message is "+msg_body +"Welcome to Hitpa. Please select below menu:\n1. Policy Data\n2. Ecard\n3. ClaimStatus\n4. Main Menu\n5. Exit"
+                        
                        }
                    },
                    headers:{
