@@ -1,6 +1,33 @@
 const express=require("express");
 const body_parser=require("body-parser");
 const axios=require("axios");
+
+const menu = {
+    body: '👋 Welcome to Hitpa! Please select an option below:',
+    options: [
+      {
+        text: '📝 Policy Data',
+        value: 'policy-data'
+      },
+      {
+        text: '💳 Ecard',
+        value: 'ecard'
+      },
+      {
+        text: '📋 Claim Status',
+        value: 'claim-status'
+      },
+      {
+        text: '🏠 Main Menu',
+        value: 'main-menu'
+      },
+      {
+        text: '👋 Exit',
+        value: 'exit'
+      }
+    ]
+  };
+  const msg_body = 'select an option';
 require('dotenv').config();
 
 const app=express().use(body_parser.json());
@@ -53,49 +80,36 @@ app.post("/webhook",(req,res)=>{ //i want some
                console.log("from "+from);
                console.log("boady param "+msg_body);
 
-               axios({
-                   method:"POST",
-                   url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
-                   data:{
-                       messaging_product:"whatsapp",
-                       to:from,
-                       text:{
-                        body: '👋 Welcome to Hitpa! Please select an option below:',
-                        options: [
-                          {
-                            text: '📝 Policy Data',
-                            value: 'policy-data'
-                          },
-                          {
-                            text: '💳 Ecard',
-                            value: 'ecard'
-                          },
-                          {
-                            text: '📋 Claim Status',
-                            value: 'claim-status'
-                          },
-                          {
-                            text: '🏠 Main Menu',
-                            value: 'main-menu'
-                          },
-                          {
-                            text: '👋 Exit',
-                            value: 'exit'
-                          }
-                        ]
-                      }
-                      
-      
-                        
-                       
-                       
-                   },
-                   headers:{
-                       "Content-Type":"application/json"
-                   }
-
-               });
-
+           
+axios({
+  method: 'POST',
+  url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
+  data: {
+    messaging_product: 'whatsapp',
+    recipient: {
+      id: from
+    },
+    message: {
+      attachment: {
+        type: 'template',
+        payload: {
+          template_type: 'button',
+          text: menu.body,
+          buttons: menu.options.map(option => {
+            return {
+              type: 'postback',
+              title: option.text,
+              payload: option.value
+            };
+          })
+        }
+      }
+    }
+  },
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
                res.sendStatus(200);
             }else{
                 res.sendStatus(404);
