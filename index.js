@@ -60,10 +60,35 @@ app.post("/webhook",(req,res)=>{ //i want some
                        messaging_product:"whatsapp",
                        to:from,
                        text:{
-                        body: "👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2. Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit,your message is "+msg_body
+                        body: '👋 Welcome to Hitpa! Please select an option below:',
+                        options: [
+                          {
+                            text: '📝 Policy Data',
+                            value: 'policy-data'
+                          },
+                          {
+                            text: '💳 Ecard',
+                            value: 'ecard'
+                          },
+                          {
+                            text: '📋 Claim Status',
+                            value: 'claim-status'
+                          },
+                          {
+                            text: '🏠 Main Menu',
+                            value: 'main-menu'
+                          },
+                          {
+                            text: '👋 Exit',
+                            value: 'exit'
+                          }
+                        ]
+                      }
+                      
       
                         
-                       }
+                       
+                       
                    },
                    headers:{
                        "Content-Type":"application/json"
