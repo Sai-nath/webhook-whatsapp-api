@@ -59,6 +59,34 @@ app.get("/webhook",(req,res)=>{
 
 });
 
+app.post("/sendtexttemplate/:toNumber",(req,res)=>{
+
+    const axios = require('axios');
+    
+    axios.post('https://graph.facebook.com/v15.0/114396201588531/messages', {
+      messaging_product: 'whatsapp',
+      to: req.params.toNumber, // get the toNumber parameter from the URL
+      type: 'template',
+      template: {
+        name: '👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2. Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit',
+        language: {
+          code: 'en_US',
+        },
+      },
+    }, {
+      headers: {
+        'Authorization': 'Bearer WZAaPvXtAobU',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    })
+    
 app.post("/webhook",(req,res)=>{ //i want some 
 
     let body_param=req.body;
