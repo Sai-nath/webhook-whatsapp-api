@@ -2,6 +2,8 @@ const express=require("express");
 const body_parser=require("body-parser");
 const axios=require("axios");
 let mydata =null;
+const messageBody=null;
+
 const menu = {
     body: '👋 Welcome to Hitpa! Please select an option below:',
     options: [
@@ -124,6 +126,8 @@ app.get("/sendtexttemplate",(req,res)=>{
         console.log(JSON.stringify(body_param, null, 2));
         if (body_param.object) {
           console.log("inside body param");
+        messageBody="👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2. Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit";
+        console.log(messageBody);
           if (body_param.entry &&
             body_param.entry[0].changes &&
             body_param.entry[0].changes[0].value.messages &&
