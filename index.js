@@ -154,6 +154,9 @@ const productName =  response.data.ProductName;
                     
                 });
                }
+
+               console.log("calling method");
+               console.log(messageBody);
                axios({
                    method:"POST",
                    url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
