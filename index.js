@@ -1,8 +1,33 @@
 const express=require("express");
 const body_parser=require("body-parser");
 const axios=require("axios");
-
-const messageBody="👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2.Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit";
+let mydata =null;
+const menu = {
+    body: '👋 Welcome to Hitpa! Please select an option below:',
+    options: [
+      {
+        text: '📝 Policy Data',
+        value: 'policy-data'
+      },
+      {
+        text: '💳 Ecard',
+        value: 'ecard'
+      },
+      {
+        text: '📋 Claim Status',
+        value: 'claim-status'
+      },
+      {
+        text: '🏠 Main Menu',
+        value: 'main-menu'
+      },
+      {
+        text: '👋 Exit',
+        value: 'exit'
+      }
+    ]
+  };
+  const msg_body = 'select an option';
 require('dotenv').config();
 
 const app=express().use(body_parser.json());
@@ -69,8 +94,7 @@ app.get("/sendtexttemplate",(req,res)=>{
 app.post("/webhook",(req,res)=>{ //i want some 
 
     let body_param=req.body;
-   
-   
+
     console.log(JSON.stringify(body_param,null,2));
 
     if(body_param.object){
@@ -87,7 +111,8 @@ app.post("/webhook",(req,res)=>{ //i want some
                console.log("phone number "+phon_no_id);
                console.log("from "+from);
                console.log("boady param "+msg_body);
-            
+               if(msg_body===1)
+               {
                 app.get("/getpolicydetails",(req,res)=>{
                     const axios = require('axios');
                     console.log("inside body getpolicydetails");
@@ -107,56 +132,18 @@ app.post("/webhook",(req,res)=>{ //i want some
                     axios.get(url, data, { headers })
                       .then(response => {
                         // Handle the API response here
-                        console.log(response.data);
-                        
+                        mydata= response.data;
                       })
                       .catch(error => {
                         // Handle any errors here
                         console.error(error);
-
-                        const customerName = data.CustomerName;
-const memberID = response.data.MemberID;
-const memberAge = response.data.MemberAge;
-const gender =  response.data.Gender;
-const address =  response.data.Address;
-const emailID =  response.data.EmailID;
-const contactNumber =  response.ata.ContactNumber_Mob;
-const dateOfBirth =  response.data.DateOfBirth;
-const callerType =  response.data.CallerType;
-const employeeNumber =  response.data.EmployeeNumber;
-const companyName =  response.data.CompanyName;
-const uhid =  response.data.UHID;
-const policyNumber =  response.data.PolicyNumber;
-const policyStartDate =  response.data.PolicyEffectiveDate;
-const policyEndDate =  response.data.PolicyEndDate;
-const policyType =  response.data.PolicyType;
-const productName =  response.data.ProductName;
-
- messageBody =`" Dear User Please Find Your Policy Data CstomerName": "${customerName}",
-  "MemberID": "${memberID}",
-  "MemberAge": "${memberAge}",
-  "Gender": "${gender}",
-  "Address": ${address},
-  "EmailID": "${emailID}",
-  "ContactNumber_Mob": "${contactNumber}",
-  "DateOfBirth": "${dateOfBirth}",
-  "CallerType": "${callerType}",
-  "EmployeeNumber": "${employeeNumber}",
-  "CompanyName": "${companyName}",
-  "UHID": "${uhid}",
-  "PolicyNumber": "${policyNumber}",
-  "PolicyEffectiveDate": "${policyStartDate}",
-  "PolicyEndDate": "${policyEndDate}",
-  "PolicyType": "${policyType}",
-  "ProductName": "${productName}"`;
                       });
-                    
+                     // console.log(mydata);
+                 
+                      messageBody =" Dear User Please Find Your Policy Data \n CustomerName:"+ mydata.CustomerName +"\n"+"Policy No:"+mydata.PolicyNumber;
+                      console.log(messageBody);
                 });
-               
-
-               console.log("calling method");
-               console.log(messageBody);
-               console.log(token);
+               }
                axios({
                    method:"POST",
                    url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
@@ -164,7 +151,7 @@ const productName =  response.data.ProductName;
                        messaging_product:"whatsapp",
                        to:from,
                        text:{
-                        body:messageBody,
+                        body: "👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2.Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit,your message is "+msg_body
                         
                        }
                    },
@@ -188,3 +175,33 @@ app.get("/",(req,res)=>{
 });
 
 
+            app.get("/getpolicydetails",(req,res)=>{
+                    const axios = require('axios');
+                    console.log("inside body getpolicydetails");
+                
+                    // Set the API endpoint URL and request payload
+                    const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
+                    const data = {
+                      // Your request payload goes here
+                    };
+                    
+                    // Set the request headers, if needed
+                    const headers = {
+                      // Your request headers go here
+                    };
+                    
+                    // Make the API call using axios
+                    axios.get(url, data, { headers })
+                      .then(response => {
+                        // Handle the API response here
+                        mydata= response.data;
+                      })
+                      .catch(error => {
+                        // Handle any errors here
+                        console.error(error);
+                      });
+                     // console.log(mydata);
+                 
+                      messageBody =" Dear User Please Find Your Policy Data \n CustomerName:"+ mydata.CustomerName +"\n"+"Policy No:"+mydata.PolicyNumber;
+                      console.log(messageBody);
+                });
