@@ -91,123 +91,77 @@ app.get("/sendtexttemplate",(req,res)=>{
       });
     })
     
-app.post("/webhook",(req,res)=>{ //i want some 
-
-    let body_param=req.body;
-
-    console.log(JSON.stringify(body_param,null,2));
-
-    if(body_param.object){
-        console.log("inside body param");
-        if(body_param.entry && 
-            body_param.entry[0].changes && 
-            body_param.entry[0].changes[0].value.messages && 
-            body_param.entry[0].changes[0].value.messages[0]  
-            ){
-               let phon_no_id=body_param.entry[0].changes[0].value.metadata.phone_number_id;
-               let from = body_param.entry[0].changes[0].value.messages[0].from; 
-               let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
-
-               console.log("phone number "+phon_no_id);
-               console.log("from "+from);
-               console.log("boady param "+msg_body);
-               if(msg_body.trim().toLowerCase()==="policy")
-               {
-                console.log("inside body msg_body 1");
-                app.get("/getpolicydetails",(req,res)=>{
-                    const axios = require('axios');
-                    console.log("inside body getpolicydetails");
-                
-                    // Set the API endpoint URL and request payload
-                    const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
-                    const data = {
-                      // Your request payload goes here
-                    };
-                    
-                    // Set the request headers, if needed
-                    const headers = {
-                      // Your request headers go here
-                    };
-                    
-                    // Make the API call using axios
-                    axios.get(url, data, { headers })
-                      .then(response => {
-                        // Handle the API response here
-                        mydata= response.data;
-                      })
-                      .catch(error => {
-                        // Handle any errors here
-                        console.error(error);
-                      });
-                     // console.log(mydata);
-                 
-                      messageBody =" Dear User Please Find Your Policy Data \n CustomerName:"+ mydata.CustomerName +"\n"+"Policy No:"+mydata.PolicyNumber;
-                      console.log(messageBody);
-                });
-               }
-               axios({
-                   method:"POST",
-                   url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
-                   data:{
-                       messaging_product:"whatsapp",
-                       to:from,
-                       text:{
-                        body: "👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2.Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit,your message is "+msg_body
-                        
-                       }
-                   },
-                   headers:{
-                       "Content-Type":"application/json"
-                   }
-
-               });
-
-               res.sendStatus(200);
-            }else{
-                res.sendStatus(404);
+    app.get("/getpolicydetails", (req, res) => {
+        const axios = require('axios');
+        console.log("inside body getpolicydetails");
+        // Set the API endpoint URL and request payload
+        const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
+        const data = {
+          // Your request payload goes here
+        };
+        // Set the request headers, if needed
+        const headers = {
+          // Your request headers go here
+        };
+        // Make the API call using axios
+        axios.get(url, data, { headers })
+          .then(response => {
+            // Handle the API response here
+            mydata = response.data;
+          })
+          .catch(error => {
+            // Handle any errors here
+            console.error(error);
+          });
+        // console.log(mydata);
+        messageBody = " Dear User Please Find Your Policy Data \n CustomerName:" + mydata.CustomerName + "\n" + "Policy No:" + mydata.PolicyNumber;
+        console.log(messageBody);
+      });
+      
+      // Use the route inside the post request handler function
+      app.post("/webhook", async (req, res) => {
+        let body_param = req.body;
+        console.log(JSON.stringify(body_param, null, 2));
+        if (body_param.object) {
+          console.log("inside body param");
+          if (body_param.entry &&
+            body_param.entry[0].changes &&
+            body_param.entry[0].changes[0].value.messages &&
+            body_param.entry[0].changes[0].value.messages[0]) {
+            let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
+            let from = body_param.entry[0].changes[0].value.messages[0].from;
+            let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
+            console.log("phone number " + phon_no_id);
+            console.log("from " + from);
+            console.log("boady param " + msg_body);
+            if (msg_body.trim().toLowerCase() === "policy") {
+              // Call the route defined outside the post request handler function
+              app.get("/getpolicydetails", (req, res) => {});
             }
-
-    }
-
-});
+            axios({
+              method: "POST",
+              url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
+              data: {
+                messaging_product: "whatsapp",
+                to: from,
+                text: {
+                  body: messageBody,
+                }
+              },
+              headers: {
+                "Content-Type": "application/json"
+              }
+            });
+            res.sendStatus(200);
+          } else {
+            res.sendStatus(404);
+          }
+        }
+      });
 
 app.get("/",(req,res)=>{
     res.status(200).send("hello this is webhook setup");
 });
 
 
-            app.get("/getpolicydetails",(req,res)=>{
-                    const axios = require('axios');
-                    console.log("inside body getpolicydetails");
-                
-                    // Set the API endpoint URL and request payload
-                    const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
-                    const data = {
-                      // Your request payload goes here
-                    };
-                    
-                    // Set the request headers, if needed
-                    const headers = {
-                      // Your request headers go here
-                    };
-                    
-                    // Make the API call using axios
-                    axios.get(url, data, { headers })
-                      .then(response => {
-                        // Handle the API response here
-                        mydata= response.data;
-                      })
-                      .catch(error => {
-                        // Handle any errors here
-                        console.error(error);
-                      });
-                     // console.log(mydata);
-                 
-                      messageBody =" Dear User Please Find Your Policy Data \n CustomerName:"+ mydata.CustomerName +"\n"+"Policy No:"+mydata.PolicyNumber;
-                      console.log(messageBody);
-                      if (mydata.CustomerName.trim().toLowerCase() === "debasis acharya") {
-                        console.log("Data matched");
-                      } else {
-                        console.log("Data not matched");
-                      }
-                });
+           
