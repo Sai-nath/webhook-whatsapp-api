@@ -111,8 +111,9 @@ app.post("/webhook",(req,res)=>{ //i want some
                console.log("phone number "+phon_no_id);
                console.log("from "+from);
                console.log("boady param "+msg_body);
-               if(msg_body===1)
+               if(msg_body==='1')
                {
+                console.log("inside body msg_body 1");
                 app.get("/getpolicydetails",(req,res)=>{
                     const axios = require('axios');
                     console.log("inside body getpolicydetails");
