@@ -87,8 +87,7 @@ app.post("/webhook",(req,res)=>{ //i want some
                console.log("phone number "+phon_no_id);
                console.log("from "+from);
                console.log("boady param "+msg_body);
-               if(msg_body==="1")
-               {
+            
                 app.get("/getpolicydetails",(req,res)=>{
                     const axios = require('axios');
                     console.log("inside body getpolicydetails");
@@ -153,7 +152,7 @@ const productName =  response.data.ProductName;
                       });
                     
                 });
-               }
+               
 
                console.log("calling method");
                console.log(messageBody);
