@@ -111,7 +111,7 @@ app.post("/webhook",(req,res)=>{ //i want some
                console.log("phone number "+phon_no_id);
                console.log("from "+from);
                console.log("boady param "+msg_body);
-               if(msg_body==='1')
+               if(msg_body.trim().toLowerCase()==='policy')
                {
                 console.log("inside body msg_body 1");
                 app.get("/getpolicydetails",(req,res)=>{
@@ -205,4 +205,9 @@ app.get("/",(req,res)=>{
                  
                       messageBody =" Dear User Please Find Your Policy Data \n CustomerName:"+ mydata.CustomerName +"\n"+"Policy No:"+mydata.PolicyNumber;
                       console.log(messageBody);
+                      if (mydata.CustomerName.trim().toLowerCase() === "debasis acharya") {
+                        console.log("Data matched");
+                      } else {
+                        console.log("Data not matched");
+                      }
                 });
