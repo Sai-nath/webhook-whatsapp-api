@@ -36,10 +36,12 @@ const token=process.env.TOKEN;
 const mytoken=process.env.MYTOKEN;//Sainath token
 
 
-app.listen(process.env.PORT,()=>{
+// app.listen(process.env.PORT,()=>{
+//     console.log("webhook is listening");
+// });
+app.listen(8080,()=>{
     console.log("webhook is listening");
 });
-
 //to verify the callback url from dashboard side - cloud api side
 app.get("/webhook",(req,res)=>{
    let mode=req.query["hub.mode"];
@@ -59,23 +61,25 @@ app.get("/webhook",(req,res)=>{
 
 });
 
-app.post("/sendtexttemplate/:toNumber",(req,res)=>{
+app.get("/sendtexttemplate",(req,res)=>{
 
+    console.log("sendtexttemplate is triggered");
     const axios = require('axios');
     
     axios.post('https://graph.facebook.com/v15.0/114396201588531/messages', {
       messaging_product: 'whatsapp',
-      to: req.params.toNumber, // get the toNumber parameter from the URL
+      //to: req.params.toNumber, // get the toNumber parameter from the URL
+      to: '916309780970',
       type: 'template',
       template: {
-        name: '👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2. Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit',
+        "name": "hello_world",
         language: {
           code: 'en_US',
         },
       },
     }, {
       headers: {
-        'Authorization': 'Bearer WZAaPvXtAobU',
+        'Authorization': 'Bearer EAANmlKuCV0cBAI4DgMrQ9UwtuKYsTQWAZBuduIpBuSaFLm4A2Wyof3V67gXkjaGCqKIMwQY7EBPpqXOT7ljxmCWrd25tYC8sbZCtYTV2bt0SyZAzTe3JDHru5sRZC7bNtZBj4qu4Ezb1xy4K3lJey9xb8eXTLIGOirSWhH27bI7xllhp78DqP5VZCrTHQqHOsDIGFnyid54WZAaPvXtAobU',
         'Content-Type': 'application/json',
       },
     })
@@ -90,7 +94,8 @@ app.post("/sendtexttemplate/:toNumber",(req,res)=>{
 app.post("/webhook",(req,res)=>{ //i want some 
 
     let body_param=req.body;
-
+    const messageBody ="";
+    messageBody="👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2.Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit"
     console.log(JSON.stringify(body_param,null,2));
 
     if(body_param.object){
@@ -107,7 +112,73 @@ app.post("/webhook",(req,res)=>{ //i want some
                console.log("phone number "+phon_no_id);
                console.log("from "+from);
                console.log("boady param "+msg_body);
+               if(msg_body===1)
+               {
+                app.get("/getpolicydetails",(req,res)=>{
+                    const axios = require('axios');
+                    console.log("inside body getpolicydetails");
+                
+                    // Set the API endpoint URL and request payload
+                    const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
+                    const data = {
+                      // Your request payload goes here
+                    };
+                    
+                    // Set the request headers, if needed
+                    const headers = {
+                      // Your request headers go here
+                    };
+                    
+                    // Make the API call using axios
+                    axios.get(url, data, { headers })
+                      .then(response => {
+                        // Handle the API response here
+                        console.log(response.data);
+                        
+                      })
+                      .catch(error => {
+                        // Handle any errors here
+                        console.error(error);
 
+                        const customerName = data.CustomerName;
+const memberID = response.data.MemberID;
+const memberAge = response.data.MemberAge;
+const gender =  response.data.Gender;
+const address =  response.data.Address;
+const emailID =  response.data.EmailID;
+const contactNumber =  response.ata.ContactNumber_Mob;
+const dateOfBirth =  response.data.DateOfBirth;
+const callerType =  response.data.CallerType;
+const employeeNumber =  response.data.EmployeeNumber;
+const companyName =  response.data.CompanyName;
+const uhid =  response.data.UHID;
+const policyNumber =  response.data.PolicyNumber;
+const policyStartDate =  response.data.PolicyEffectiveDate;
+const policyEndDate =  response.data.PolicyEndDate;
+const policyType =  response.data.PolicyType;
+const productName =  response.data.ProductName;
+
+ messageBody = `" Dear User Please Find Your Policy Data CstomerName": "${customerName}",
+  "MemberID": "${memberID}",
+  "MemberAge": "${memberAge}",
+  "Gender": "${gender}",
+  "Address": ${address},
+  "EmailID": "${emailID}",
+  "ContactNumber_Mob": "${contactNumber}",
+  "DateOfBirth": "${dateOfBirth}",
+  "CallerType": "${callerType}",
+  "EmployeeNumber": "${employeeNumber}",
+  "CompanyName": "${companyName}",
+  "UHID": "${uhid}",
+  "PolicyNumber": "${policyNumber}",
+  "PolicyEffectiveDate": "${policyStartDate}",
+  "PolicyEndDate": "${policyEndDate}",
+  "PolicyType": "${policyType}",
+  "ProductName": "${productName}"`;
+                      });
+                    
+                });
+               }
                axios({
                    method:"POST",
                    url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
@@ -115,7 +186,8 @@ app.post("/webhook",(req,res)=>{ //i want some
                        messaging_product:"whatsapp",
                        to:from,
                        text:{
-                        body: "👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2. Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit,your message is "+msg_body
+                        body: messageBody,
+                        
                        }
                    },
                    headers:{
@@ -136,3 +208,5 @@ app.post("/webhook",(req,res)=>{ //i want some
 app.get("/",(req,res)=>{
     res.status(200).send("hello this is webhook setup");
 });
+
+
