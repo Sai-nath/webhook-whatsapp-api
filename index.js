@@ -157,6 +157,7 @@ const productName =  response.data.ProductName;
 
                console.log("calling method");
                console.log(messageBody);
+               console.log(token);
                axios({
                    method:"POST",
                    url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
@@ -164,7 +165,7 @@ const productName =  response.data.ProductName;
                        messaging_product:"whatsapp",
                        to:from,
                        text:{
-                        body: messageBody,
+                        body:messageBody,
                         
                        }
                    },
