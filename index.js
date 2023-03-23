@@ -2,32 +2,7 @@ const express=require("express");
 const body_parser=require("body-parser");
 const axios=require("axios");
 
-const menu = {
-    body: '👋 Welcome to Hitpa! Please select an option below:',
-    options: [
-      {
-        text: '📝 Policy Data',
-        value: 'policy-data'
-      },
-      {
-        text: '💳 Ecard',
-        value: 'ecard'
-      },
-      {
-        text: '📋 Claim Status',
-        value: 'claim-status'
-      },
-      {
-        text: '🏠 Main Menu',
-        value: 'main-menu'
-      },
-      {
-        text: '👋 Exit',
-        value: 'exit'
-      }
-    ]
-  };
-  const msg_body = 'select an option';
+const messageBody="👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2.Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit";
 require('dotenv').config();
 
 const app=express().use(body_parser.json());
@@ -94,8 +69,8 @@ app.get("/sendtexttemplate",(req,res)=>{
 app.post("/webhook",(req,res)=>{ //i want some 
 
     let body_param=req.body;
-    const messageBody ="";
-    messageBody="👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2.Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit"
+   
+   
     console.log(JSON.stringify(body_param,null,2));
 
     if(body_param.object){
@@ -158,7 +133,7 @@ const policyEndDate =  response.data.PolicyEndDate;
 const policyType =  response.data.PolicyType;
 const productName =  response.data.ProductName;
 
- messageBody = `" Dear User Please Find Your Policy Data CstomerName": "${customerName}",
+ messageBody =`" Dear User Please Find Your Policy Data CstomerName": "${customerName}",
   "MemberID": "${memberID}",
   "MemberAge": "${memberAge}",
   "Gender": "${gender}",
