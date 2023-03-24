@@ -123,7 +123,7 @@ app.get("/sendtexttemplate",(req,res)=>{
       to: '916309780970',
       type: 'template',
       template: {
-        "name": "sent_invite",
+        "name": "hello_world",
         language: {
           code: 'en_US',
         },
