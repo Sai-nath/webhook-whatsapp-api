@@ -200,6 +200,7 @@ app.post("/webhook", async (req, res) => {
             console.log("from " + from);
             console.log("boady param " + msg_body);
             console.log("messageBody " + messageBody);
+            console.log("token " + token);
             if (msg_body.trim().toLowerCase() === "policy") {
                 await getpolicydetails(req, res);
               } 
