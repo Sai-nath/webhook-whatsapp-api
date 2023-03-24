@@ -199,9 +199,11 @@ app.post("/webhook", async (req, res) => {
             console.log("phone number " + phon_no_id);
             console.log("from " + from);
             console.log("boady param " + msg_body);
+            console.log("messageBody " + messageBody);
             if (msg_body.trim().toLowerCase() === "policy") {
                 await getpolicydetails(req, res);
-              } else 
+              } 
+              else 
               {
             axios({
               method: "POST",
