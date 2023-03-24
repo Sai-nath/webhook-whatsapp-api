@@ -68,6 +68,8 @@ app.get("/webhook",(req,res)=>{
 
 const getpolicydetails = async (req, res) => {
     const axios = require('axios');
+    let body_param = req.body;
+    let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
     console.log("inside body getpolicydetails");
     // Set the API endpoint URL and request payload
     const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
