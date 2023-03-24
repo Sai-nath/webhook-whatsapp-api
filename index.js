@@ -1,6 +1,8 @@
 const express=require("express");
 const body_parser=require("body-parser");
 const axios=require("axios");
+
+
 let mydata =null;
 let messageBody=null;
 
@@ -44,7 +46,8 @@ const mytoken=process.env.MYTOKEN;//Sainath token
 app.listen(8080,()=>{
     console.log("webhook is listening");
 });
-//to verify the callback url from dashboard side - cloud api side
+
+
 app.get("/webhook",(req,res)=>{
    let mode=req.query["hub.mode"];
    let challange=req.query["hub.challenge"];
@@ -63,6 +66,47 @@ app.get("/webhook",(req,res)=>{
 
 });
 
+const getpolicydetails = async (req, res) => {
+    const axios = require('axios');
+    console.log("inside body getpolicydetails");
+    // Set the API endpoint URL and request payload
+    const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
+    const data = {
+      // Your request payload goes here
+    };
+    // Set the request headers, if needed
+    const headers = {
+      // Your request headers go here
+    };
+    // Make the API call using axios
+    axios.get(url, data, { headers })
+      .then(response => {
+        // Handle the API response here
+        mydata = response.data;
+        messageBody = " Dear User Please Find Your Policy Data \n CustomerName:" + mydata.CustomerName + "\n" + "Policy No:" + mydata.PolicyNumber;
+        console.log(messageBody);
+        axios({
+            method: "POST",
+            url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
+            data: {
+              messaging_product: "whatsapp",
+              to: from,
+              text: {
+                body: messageBody,
+              }
+            },
+            headers: {
+              "Content-Type": "application/json"
+            }
+          });
+       // res.send(messageBody);
+      })
+      .catch(error => {
+        // Handle any errors here
+        console.error(error);
+      });
+  }
+  
 app.get("/sendtexttemplate",(req,res)=>{
 
     console.log("sendtexttemplate is triggered");
@@ -81,7 +125,7 @@ app.get("/sendtexttemplate",(req,res)=>{
       },
     }, {
       headers: {
-        'Authorization': 'Bearer EAANmlKuCV0cBAI4DgMrQ9UwtuKYsTQWAZBuduIpBuSaFLm4A2Wyof3V67gXkjaGCqKIMwQY7EBPpqXOT7ljxmCWrd25tYC8sbZCtYTV2bt0SyZAzTe3JDHru5sRZC7bNtZBj4qu4Ezb1xy4K3lJey9xb8eXTLIGOirSWhH27bI7xllhp78DqP5VZCrTHQqHOsDIGFnyid54WZAaPvXtAobU',
+        'Authorization': 'Bearer EAANmlKuCV0cBAK0t29tvasYVEwwtS924iqPCddYGKWy5gzyfXJBo1mQ07YT8mEMYOS7SQNeesiq3ONZBZAhcoZChQvfSvgU7UW0MF2K4Yz9owSIbeDT9ECmSWqiVTTkzvJsmH1fDiVv2nttvZCoEWv1JBmKkXTcQalFWa3QSynyCpdlHclBXatlNyDm0hBHfZBw5n0qMwTlonZBmY2FMPv',
         'Content-Type': 'application/json',
       },
     })
@@ -91,37 +135,54 @@ app.get("/sendtexttemplate",(req,res)=>{
       .catch(error => {
         console.error(error);
       });
-    })
+    });
     
-    app.get("/getpolicydetails", (req, res) => {
-        const axios = require('axios');
-        console.log("inside body getpolicydetails");
-        // Set the API endpoint URL and request payload
-        const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
-        const data = {
-          // Your request payload goes here
-        };
-        // Set the request headers, if needed
-        const headers = {
-          // Your request headers go here
-        };
-        // Make the API call using axios
-        axios.get(url, data, { headers })
-          .then(response => {
-            // Handle the API response here
-            mydata = response.data;
-          })
-          .catch(error => {
-            // Handle any errors here
-            console.error(error);
-          });
-        // console.log(mydata);
-        messageBody = " Dear User Please Find Your Policy Data \n CustomerName:" + mydata.CustomerName + "\n" + "Policy No:" + mydata.PolicyNumber;
-        console.log(messageBody);
-      });
+
+// app.get("/getpolicydetails", (req, res) => {
+//     const axios = require('axios');
+//     console.log("inside body getpolicydetails");
+//         // Set the API endpoint URL and request payload
+//         const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
+      
+//         // Set the request headers, if needed
+//         const headers = {
+//           // Your request headers go here
+//         };
+      
+//         // Make the API call using axios
+//         axios.get(url, { headers })
+//           .then(response => {
+//             // Handle the API response here
+//             mydata = response.data;
+//             const messageBody = "Dear User Please Find Your Policy Data \n CustomerName:" + mydata.CustomerName + "\n" + "Policy No:" + mydata.PolicyNumber;
+//             console.log(messageBody);
+//             axios({
+//               method: "POST",
+//               url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
+//               data: {
+//                 messaging_product: "whatsapp",
+//                 to: from,
+//                 text: {
+//                   body: messageBody,
+//                 }
+//               },
+//               headers: {
+//                 "Content-Type": "application/json"
+//               }
+//             });
+//             res.sendStatus(200);
+//           })
+//           .catch(error => {
+//             // Handle any errors here
+//             console.error(error);
+//             res.sendStatus(500);
+//           });
+//         // console.log(mydata);
+      
+//       });
       
       // Use the route inside the post request handler function
-      app.post("/webhook", async (req, res) => {
+app.post("/webhook", async (req, res) => {
         let body_param = req.body;
         console.log(JSON.stringify(body_param, null, 2));
         if (body_param.object) {
@@ -139,9 +200,9 @@ app.get("/sendtexttemplate",(req,res)=>{
             console.log("from " + from);
             console.log("boady param " + msg_body);
             if (msg_body.trim().toLowerCase() === "policy") {
-              // Call the route defined outside the post request handler function
-              app.get("/getpolicydetails", (req, res) => {});
-            }
+                await getpolicydetails(req, res);
+              } else 
+              {
             axios({
               method: "POST",
               url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
@@ -157,7 +218,7 @@ app.get("/sendtexttemplate",(req,res)=>{
               }
             });
             res.sendStatus(200);
-          } else {
+          } }else {
             res.sendStatus(404);
           }
         }
