@@ -70,7 +70,10 @@ const getpolicydetails = async (req, res) => {
     const axios = require('axios');
     let body_param = req.body;
     let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
+    let from = body_param.entry[0].changes[0].value.messages[0].from;
+    let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
     console.log("inside body getpolicydetails");
+    console.log(msg_body);
     // Set the API endpoint URL and request payload
     const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
     const data = {
@@ -140,50 +143,7 @@ app.get("/sendtexttemplate",(req,res)=>{
     });
     
 
-// app.get("/getpolicydetails", (req, res) => {
-//     const axios = require('axios');
-//     console.log("inside body getpolicydetails");
-//         // Set the API endpoint URL and request payload
-//         const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
-      
-//         // Set the request headers, if needed
-//         const headers = {
-//           // Your request headers go here
-//         };
-      
-//         // Make the API call using axios
-//         axios.get(url, { headers })
-//           .then(response => {
-//             // Handle the API response here
-//             mydata = response.data;
-//             const messageBody = "Dear User Please Find Your Policy Data \n CustomerName:" + mydata.CustomerName + "\n" + "Policy No:" + mydata.PolicyNumber;
-//             console.log(messageBody);
-//             axios({
-//               method: "POST",
-//               url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
-//               data: {
-//                 messaging_product: "whatsapp",
-//                 to: from,
-//                 text: {
-//                   body: messageBody,
-//                 }
-//               },
-//               headers: {
-//                 "Content-Type": "application/json"
-//               }
-//             });
-//             res.sendStatus(200);
-//           })
-//           .catch(error => {
-//             // Handle any errors here
-//             console.error(error);
-//             res.sendStatus(500);
-//           });
-//         // console.log(mydata);
-      
-//       });
-      
-      // Use the route inside the post request handler function
+
 app.post("/webhook", async (req, res) => {
         let body_param = req.body;
         console.log(JSON.stringify(body_param, null, 2));
