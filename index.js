@@ -151,13 +151,25 @@ app.post("/webhook", async (req, res) => {
           console.log("inside body param");
         messageBody="👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2. Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit";
         console.log("inside body param");
+       let replytype =body_param.entry[0].changes[0].value.messages[0].type;
+       let msg_body =null;
+       if(replytype==="button")
+       {
+        msg_body =  body_param.entry[0].changes[0].value.messages[0].button.text;
+       }
+       else
+       {
+         msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
+       }
           if (body_param.entry &&
             body_param.entry[0].changes &&
             body_param.entry[0].changes[0].value.messages &&
             body_param.entry[0].changes[0].value.messages[0]) {
             let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
             let from = body_param.entry[0].changes[0].value.messages[0].from;
-            let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
+          
+           
+
             console.log("phone number " + phon_no_id);
             console.log("from " + from);
             console.log("boady param " + msg_body);
