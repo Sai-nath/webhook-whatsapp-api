@@ -208,7 +208,7 @@ app.post("/webhook", async (req, res) => {
         console.log(JSON.stringify(body_param, null, 2));
         if (body_param.object) {
           console.log("inside body param");
-        messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Ecards\n🏠 4. Main Menu\n👋 5. Exit\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with "1".\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
+        messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Ecards\n🏠 4. Main Menu\n👋 5. Exit\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
         console.log("inside body param");
        let replytype =body_param.entry[0].changes[0].value.messages[0].type;
        let msg_body =null;
