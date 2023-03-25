@@ -221,7 +221,6 @@ console.log(messageBody);
         " *MemberCardDispatchDate:* " + (members.MemberCardDispatchDate || "Not available") + "\n" +
         " *dispatchRefNumber:* " + (members.dispatchRefNumber || "Not available") + "\n" +
         " *balanceSumInsured:* " + members.balanceSumInsured + "\n" +
-        " *Photo:* " + members.Photo + "\n" +
         " *InsuredID:* " + members.InsuredID + "\n" +
         " *EcartURL:* " + members.EcartURL + "\n" +
         " *DownloadURL:* " + members.DownloadURL + "\n"+"\n"+"-------------------------"+"\n"+"\n";
