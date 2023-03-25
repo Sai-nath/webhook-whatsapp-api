@@ -52,37 +52,38 @@ const getpolicydetails = async (req, res) => {
     axios.get(url, data, { headers })
       .then(response => {
         mydata = response.data;
-        messageBody = " Dear User Please Find Your Policy Data \n CustomerName:" + mydata.CustomerName + "\n" + "Policy No:" + mydata.PolicyNumber;
-        messageBody = "Dear " + mydata.CustomerName + ",\n\nPlease find below your policy details:\n\n" +
+        messageBody = "Dear *"+mydata.CustomerName+"*,\n\nPlease find below your policy details:\n\n" +
+        "%Policy No:* " + mydata.PolicyNumber;
         "*Member ID:* " + mydata.MemberID + "\n" +
-        " *Age:* " + mydata.MemberAge + "\n" +
-        "Gender: " + mydata.Gender + "\n" +
-        "Address: " + (mydata.Address ?? "N/A") + "\n" +
-        "Email ID: " + mydata.EmailID + "\n" +
-        "Mobile Number: " + mydata.ContactNumber_Mob + "\n" +
-        "Date of Birth: " + mydata.DateOfBirth + "\n" +
-        "Caller Type: " + mydata.CallerType + "\n" +
-        "Employee Number: " + mydata.EmployeeNumber + "\n" +
-        "Company Name: " + mydata.CompanyName + "\n" +
-        "Landline Number: " + (mydata.contactNumber_Land ?? "N/A") + "\n" +
-        "UHID: " + mydata.UHID + "\n" +
-        "Policy Number: " + mydata.PolicyNumber + "\n" +
-        "Insurer Name: " + (mydata.InsurerName ?? "N/A") + "\n" +
-        "Policy Effective Date: " + mydata.PolicyEffectiveDate + "\n" +
-        "Policy End Date: " + mydata.PolicyEndDate + "\n" +
-        "Policy Type: " + mydata.PolicyType + "\n" +
-        "Product Name: " + mydata.ProductName + "\n" +
-        "Policy Status: " + mydata.PolicyStatus + "\n" +
-        "Service Tax: " + mydata.ServiceTax + "\n" +
-        "Relationship: " + mydata.Relationship + "\n" +
-        "Corporate Company Name: " + mydata.CorporateCompanyName + "\n" +
-        "Sum Insured: " + mydata.SI + "\n" +
-        "Benefit Sum Insured: " + mydata.BSI + "\n\n" +
+        "*Age:* " + mydata.MemberAge + "\n" +
+        "*Gender:* " + mydata.Gender + "\n" +
+        "*Address:* " + (mydata.Address ?? "N/A") + "\n" +
+        "*Email ID:* " + mydata.EmailID + "\n" +
+        "*Mobile Number:* " + mydata.ContactNumber_Mob + "\n" +
+        "*Date of Birth:* " + mydata.DateOfBirth + "\n" +
+        "*Caller Type:* " + mydata.CallerType + "\n" +
+        "*Employee Number:* " + mydata.EmployeeNumber + "\n" +
+        "*Company Name:* " + mydata.CompanyName + "\n" +
+        "*Landline Number:* " + (mydata.contactNumber_Land ?? "N/A") + "\n" +
+        "*UHID:* " + mydata.UHID + "\n" +
+        "*Policy Number:* " + mydata.PolicyNumber + "\n" +
+        "*Insurer Name:* " + (mydata.InsurerName ?? "N/A") + "\n" +
+        "*Policy Effective Date:* " + mydata.PolicyEffectiveDate + "\n" +
+        "*Policy End Date:* " + mydata.PolicyEndDate + "\n" +
+        "*Policy Type:* " + mydata.PolicyType + "\n" +
+        "*Product Name:* " + mydata.ProductName + "\n" +
+        "*Policy Status:* " + mydata.PolicyStatus + "\n" +
+        "*Service Tax:* " + mydata.ServiceTax + "\n" +
+        "*Relationship:* " + mydata.Relationship + "\n" +
+        "*Corporate Company Name:* " + mydata.CorporateCompanyName + "\n" +
+        "*Sum Insured:* " + mydata.SI + "\n" +
+        "*Benefit Sum Insured:* " + mydata.BSI + "\n\n" +
         "If you have any questions or concerns about your policy, please don't hesitate to contact us..CALL US on our toll free numbers. *Toll free numbers 1800 180 3600 / 1800 102 3600. Email us. customerservice@hitpa.co.in. Write to us.*\n\n" +
         "If you want to access the previous menu, please type 'Simply send as 5.\n\n" +
         "Thank you for choosing " + mydata.CompanyName + " as your insurance provider.\n\n" +
         "Best regards,\n" +
-        "HiTPA Team";
+        "HiTPA Team"; 
+
         console.log(messageBody);
         axios({
             method: "POST",
@@ -132,25 +133,25 @@ const getclaimdetails = async (req, res) => {
  {
     for (let i = 0; i < newObject.claims.length; i++) {
         const claim = newObject.claims[i];
-        messageBody+= "*Claim ID: *" + claim.ClaimID + "\n" + 
+        messageBody+= "*Claim ID:* " + claim.ClaimID + "\n" + 
         "*Patient Name:* " + claim.PatientName + "\n" + 
-        "Claim Type: " + claim.ClaimType + "\n" + 
-        "Claim Sub Type: " + claim.ClaimSubType + "\n" + 
-        "Claim Status: " + claim.ClaimStatus + "\n" + 
-        "Date Of Intimation: " + claim.DateOfIntimation + "\n" + 
-        "Diagnosis: " + claim.Diagnosis+ "\n" + 
-        "Date Of Admission: " + claim.DateOfAdmission + "\n" + 
-        "Date Of Discharge: " + claim.DateOfDischarge + "\n" + 
-        "Hospital Name: " + claim.HospitalName + "\n" +
-        "Requested Amount: " + claim.RequestedAmount + "\n" + 
-        "Approved Amount: " + claim.ApprovedAmount + "\n" + 
-        "Rejected Amount: " + claim.RejectedAmount + "\n" + 
-        "Sum Insured: " + claim.SumInsured + "\n" + 
-        "Balance Sum Insured: " + claim.BalanceSumInsured + "\n" + 
-        "Total Sum Insured: " + claim.TotalSumInsured + "\n" + 
-        "Total Requested Amount: " + claim.TotalRequestedAmount + "\n" + 
-        "Total Approved Amount: " + claim.TotalApprovedAmount + "\n" + 
-        "Total Rejected Amount: " + claim.TotalRejectedAmount + "\n"+"\n"+"-------------------------------"+"\n"+"\n";
+        "*Claim Type:* " + claim.ClaimType + "\n" + 
+        "*Claim Sub Type:* " + claim.ClaimSubType + "\n" + 
+        "*Claim Status:* " + claim.ClaimStatus + "\n" + 
+        "*Date Of Intimation:* " + claim.DateOfIntimation + "\n" + 
+        "*Diagnosis:* " + claim.Diagnosis+ "\n" + 
+        "*Date Of Admission:* " + claim.DateOfAdmission + "\n" + 
+        "*Date Of Discharge:* " + claim.DateOfDischarge + "\n" + 
+        "*Hospital Name:* " + claim.HospitalName + "\n" +
+        "*Requested Amount:* " + claim.RequestedAmount + "\n" + 
+        "*Approved Amount:* " + claim.ApprovedAmount + "\n" + 
+        "*Rejected Amount:* " + claim.RejectedAmount + "\n" + 
+        "*Sum Insured:* " + claim.SumInsured + "\n" + 
+        "*Balance Sum Insured:* " + claim.BalanceSumInsured + "\n" + 
+        "*Total Sum Insured:* " + claim.TotalSumInsured + "\n" + 
+        "*Total Requested Amount:* " + claim.TotalRequestedAmount + "\n" + 
+        "*Total Approved Amount:* " + claim.TotalApprovedAmount + "\n" + 
+        "*Total Rejected Amount:* " + claim.TotalRejectedAmount + "\n"+"\n"+"-------------------------------"+"\n"+"\n";
       }
  }
 
@@ -315,7 +316,7 @@ app.post("/webhook", async (req, res) => {
      
             else
             {
-                messageBody="I'm sorry, it looks like your input was incorrect. Please make sure to follow the instructions and reply back with the corresponding number for the option you would like to access.\n\nHere are the options again:\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nIf youre still facing any issues, please contact our helpdesk for assistance.\n\nThank you for choosing Hitpa!";
+                messageBody="I'm sorry, it looks like your input was incorrect. Please make sure to follow the instructions and reply back with the corresponding number for the option you would like to access.\n\nHere are the options again:\n📝 1. Policy Data\n📋 2. Claim Details\n📋 3. Member Details\n📇 4. Ecards\n🏠 5. Main Menu\n\nIf youre still facing any issues, please contact our helpdesk for assistance.\n\nThank you for choosing Hitpa!";
             }
 
             console.log("phone number " + phon_no_id);
@@ -338,7 +339,7 @@ app.post("/webhook", async (req, res) => {
             }
             else
             {
-                messageBody="I'm sorry, it looks like your input was incorrect. Please make sure to follow the instructions and reply back with the corresponding number for the option you would like to access.\n\nHere are the options again:\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nIf youre still facing any issues, please contact our helpdesk for assistance.\n\n .CALL US on our toll free numbers. *Toll free numbers 1800 180 3600 / 1800 102 3600. Email us. customerservice@hitpa.co.in. Write to us.* \n\nThank you for choosing Hitpa!";
+                messageBody="I'm sorry, it looks like your input was incorrect. Please make sure to follow the instructions and reply back with the corresponding number for the option you would like to access.\n\nHere are the options again:\n📝 1. Policy Data\n📋 2. Claim Details\n📋 3. Member Details\n📇 4. Ecards\n🏠 5. Main Menu\n\nIf youre still facing any issues, please contact our helpdesk for assistance.\n\n .CALL US on our toll free numbers. *Toll free numbers 1800 180 3600 / 1800 102 3600. Email us. customerservice@hitpa.co.in. Write to us.* \n\nThank you for choosing Hitpa!";
             }
 
 
