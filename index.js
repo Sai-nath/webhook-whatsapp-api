@@ -79,7 +79,7 @@ const getpolicydetails = async (req, res) => {
         "Sum Insured: " + mydata.SI + "\n" +
         "Benefit Sum Insured: " + mydata.BSI + "\n\n" +
         "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
-        "If you want to access the previous menu, please type 'MENU OR Simply send as 4.\n\n" +
+        "If you want to access the previous menu, please type 'MENU OR Simply send as 5.\n\n" +
         "Thank you for choosing " + mydata.CompanyName + " as your insurance provider.\n\n" +
         "Best regards,\n" +
         "HiTPA Team";
@@ -155,7 +155,7 @@ const getclaimdetails = async (req, res) => {
  }
 
 messageBody+= "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
-"If you want to access the previous menu, please type 'Menu OR Simply send as 4.\n\n" +
+"If you want to access the previous menu, please type 'Menu OR Simply send as 5.\n\n" +
 "Best regards,\n" +
 "HiTPA Team";
 console.log(messageBody);
@@ -200,14 +200,14 @@ console.log(messageBody);
         const members = Claimdata.MemberDetails;
         const newObjectmembers = {members};
  messageBody = "Here are the details of all the MemberDetails we have in our system mapped to policy:\n\n";
- if(newObject.claims.length===0)
+ if(newObjectmembers.members.length===0)
  {
     messageBody="No Claim Found for this MemberDetails Data";
  }
  else
  {
     for (let i = 0; i < newObjectmembers.members.length; i++) {
-        const members = members.claims[i];
+        const members = newObjectmembers.members[i];
         messageBody += " *MemberName:* " + members.MemberName + "\n" +
         " *MemberRelationship:* " + members.MemberRelationship + "\n" +
         " *MemberAge:* " + members.MemberAge + "\n" +
@@ -229,7 +229,7 @@ console.log(messageBody);
  }
 
 messageBody+= "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
-"If you want to access the previous menu, please type 'Menu OR Simply send as 4.\n\n" +
+"If you want to access the previous menu, please type 'Menu OR Simply send as 5.\n\n" +
 "Best regards,\n" +
 "HiTPA Team";
 console.log(messageBody);
@@ -320,6 +320,10 @@ app.post("/webhook", async (req, res) => {
             else if(msg_body.trim().toLowerCase() === "4")
             {
               messageBody= "Sorry, we're unable to generate your ecard at the moment. Please try again later. We apologize for the inconvenience. If it's an emergency and you need immediate assistance, please contact our helpdesk.\n\nThank you for choosing Hitpa!"
+            }
+            else if(msg_body.trim().toLowerCase() === "Menu")
+            {
+                messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
             }
             else
             {
