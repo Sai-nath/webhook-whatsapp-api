@@ -133,17 +133,33 @@ const getpolicydetails = async (req, res) => {
       .then(response => {
         // Handle the API response here
         Claimdata = response.data;
-        const claims = Claimdata.PolicyDetails.claims;
+        const claims = Claimdata.PolicyDetails;
         const newObject = {claims};
 
-         messageBody = "Here are the details of all the claims we have in our system:\n\n";
-for (let i = 0; i < newObject.length; i++) {
-  const claim = newObject[i];
-  messageBody += `Claim ID: ${claim.ClaimID}\n`;
-  messageBody += `Policy ID: ${claim.PolicyID}\n`;
-  messageBody += `Claim Amount: ${claim.ClaimAmount}\n`;
-  messageBody += `Claim Status: ${claim.ClaimStatus}\n`;
-  messageBody += "\n"; // add a newline after each claim
+ messageBody = "Here are the details of all the claims we have in our system:\n\n";
+for (let i = 0; i < newObject.claims.length; i++) {
+  const claim = newObject.claims[i];
+  messageBody+= "Claim ID: " + claim.ClaimID + "\n" + 
+  "Patient Name: " + claim.PatientName + "\n" + 
+  "Claim Type: " + claim.ClaimType + "\n" + 
+  "Claim Sub Type: " + claim.ClaimSubType + "\n" + 
+  "Preauth ID: " + claim.PreauthID + "\n" + 
+  "Claim Status: " + claim.ClaimStatus + "\n" + 
+  "Date Of Intimation: " + claim.DateOfIntimation + "\n" + 
+  "Diagnosis: " + claim.Diagnosis+ "\n" + 
+  "Claim No: " + claim.ClaimNo + "\n" + 
+  "Date Of Admission: " + claim.DateOfAdmission + "\n" + 
+  "Date Of Discharge: " + claim.DateOfDischarge + "\n" + 
+  "Hospital Name: " + claim.HospitalName + "\n" +
+  "Requested Amount: " + claim.RequestedAmount + "\n" + 
+  "Approved Amount: " + claim.ApprovedAmount + "\n" + 
+  "Rejected Amount: " + claim.RejectedAmount + "\n" + 
+  "Sum Insured: " + claim.SumInsured + "\n" + 
+  "Balance Sum Insured: " + claim.BalanceSumInsured + "\n" + 
+  "Total Sum Insured: " + claim.TotalSumInsured + "\n" + 
+  "Total Requested Amount: " + claim.TotalRequestedAmount + "\n" + 
+  "Total Approved Amount: " + claim.TotalApprovedAmount + "\n" + 
+  "Total Rejected Amount: " + claim.TotalRejectedAmount + "\n"+"\n"+"-------------------------------------------------"+"\n"+"\n";
 }
 messageBody+= "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
 "If you want to access the previous menu, please type 'MENU OR Simply send as 4.\n\n" +
