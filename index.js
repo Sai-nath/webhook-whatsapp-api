@@ -1,44 +1,15 @@
 const express=require("express");
 const body_parser=require("body-parser");
 const axios=require("axios");
-
-
 let mydata =null;
 let messageBody=null;
 
-const menu = {
-    body: '👋 Welcome to Hitpa! Please select an option below:',
-    options: [
-      {
-        text: '📝 Policy Data',
-        value: 'policy-data'
-      },
-      {
-        text: '💳 Ecard',
-        value: 'ecard'
-      },
-      {
-        text: '📋 Claim Status',
-        value: 'claim-status'
-      },
-      {
-        text: '🏠 Main Menu',
-        value: 'main-menu'
-      },
-      {
-        text: '👋 Exit',
-        value: 'exit'
-      }
-    ]
-  };
-  const msg_body = 'select an option';
+
 require('dotenv').config();
 
 const app=express().use(body_parser.json());
-
 const token=process.env.TOKEN;
-const mytoken=process.env.MYTOKEN;//Sainath token
-
+const mytoken=process.env.MYTOKEN;
 
 // app.listen(process.env.PORT,()=>{
 //     console.log("webhook is listening");
@@ -47,13 +18,10 @@ app.listen(8080,()=>{
     console.log("webhook is listening");
 });
 
-
 app.get("/webhook",(req,res)=>{
    let mode=req.query["hub.mode"];
    let challange=req.query["hub.challenge"];
    let token=req.query["hub.verify_token"];
-
-
     if(mode && token){
 
         if(mode==="subscribe" && token===mytoken){
@@ -89,6 +57,36 @@ const getpolicydetails = async (req, res) => {
         // Handle the API response here
         mydata = response.data;
         messageBody = " Dear User Please Find Your Policy Data \n CustomerName:" + mydata.CustomerName + "\n" + "Policy No:" + mydata.PolicyNumber;
+        messageBody = "Dear " + mydata.CustomerName + ",\n\nPlease find below your policy details:\n\n" +
+        "Member ID: " + mydata.MemberID + "\n" +
+        "Age: " + mydata.MemberAge + "\n" +
+        "Gender: " + mydata.Gender + "\n" +
+        "Address: " + (mydata.Address ?? "N/A") + "\n" +
+        "Email ID: " + mydata.EmailID + "\n" +
+        "Mobile Number: " + mydata.ContactNumber_Mob + "\n" +
+        "Date of Birth: " + mydata.DateOfBirth + "\n" +
+        "Caller Type: " + mydata.CallerType + "\n" +
+        "Employee Number: " + mydata.EmployeeNumber + "\n" +
+        "Company Name: " + mydata.CompanyName + "\n" +
+        "Landline Number: " + (mydata.contactNumber_Land ?? "N/A") + "\n" +
+        "UHID: " + mydata.UHID + "\n" +
+        "Policy Number: " + mydata.PolicyNumber + "\n" +
+        "Insurer Name: " + (mydata.InsurerName ?? "N/A") + "\n" +
+        "Policy Effective Date: " + mydata.PolicyEffectiveDate + "\n" +
+        "Policy End Date: " + mydata.PolicyEndDate + "\n" +
+        "Policy Type: " + mydata.PolicyType + "\n" +
+        "Product Name: " + mydata.ProductName + "\n" +
+        "Policy Status: " + mydata.PolicyStatus + "\n" +
+        "Service Tax: " + mydata.ServiceTax + "\n" +
+        "Relationship: " + mydata.Relationship + "\n" +
+        "Corporate Company Name: " + mydata.CorporateCompanyName + "\n" +
+        "Sum Insured: " + mydata.SI + "\n" +
+        "Benefit Sum Insured: " + mydata.BSI + "\n\n" +
+        "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
+        "If you want to access the previous menu, please type 'MENU'.\n\n" +
+        "Thank you for choosing " + mydata.CompanyName + " as your insurance provider.\n\n" +
+        "Best regards,\n" +
+        "HiTPA Team";
         console.log(messageBody);
         axios({
             method: "POST",
@@ -116,7 +114,6 @@ app.get("/sendtexttemplate",(req,res)=>{
 
     console.log("sendtexttemplate is triggered");
     const axios = require('axios');
-    
     axios.post('https://graph.facebook.com/v15.0/114396201588531/messages', {
       messaging_product: 'whatsapp',
       //to: req.params.toNumber, // get the toNumber parameter from the URL
@@ -175,7 +172,7 @@ app.post("/webhook", async (req, res) => {
             console.log("boady param " + msg_body);
             console.log("messageBody " + messageBody);
             console.log("token " + token);
-            if (msg_body.trim().toLowerCase() === "policy") {
+            if (msg_body.trim().toLowerCase() === "1") {
                 await getpolicydetails(req, res);
               } 
               else 
