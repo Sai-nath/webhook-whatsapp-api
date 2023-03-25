@@ -33,6 +33,8 @@ app.get("/webhook",(req,res)=>{
 
 });
 
+
+
 const getpolicydetails = async (req, res) => {
     const axios = require('axios');
     let body_param = req.body;
@@ -130,8 +132,8 @@ const getclaimdetails = async (req, res) => {
  {
     for (let i = 0; i < newObject.claims.length; i++) {
         const claim = newObject.claims[i];
-        messageBody+= "*Claim ID:*" + claim.ClaimID + "\n" + 
-        "*Patient Name:*" + claim.PatientName + "\n" + 
+        messageBody+= "*Claim ID: *" + claim.ClaimID + "\n" + 
+        "*Patient Name:* " + claim.PatientName + "\n" + 
         "Claim Type: " + claim.ClaimType + "\n" + 
         "Claim Sub Type: " + claim.ClaimSubType + "\n" + 
         "Claim Status: " + claim.ClaimStatus + "\n" + 
@@ -178,6 +180,79 @@ console.log(messageBody);
       });
   }
 
+  const getmemberdetails = async (req, res) => {
+    let Claimdata =null;
+    const axios = require('axios');
+    let body_param = req.body;
+    let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
+    let from = body_param.entry[0].changes[0].value.messages[0].from;
+    let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
+    console.log(msg_body);
+    // Set the API endpoint URL and request payload
+    const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
+    const data = {
+    };
+    const headers = {
+    };
+    axios.get(url, data, { headers })
+      .then(response => {
+        Claimdata = response.data;
+        const members = Claimdata.MemberDetails;
+        const newObjectmembers = {members};
+ messageBody = "Here are the details of all the MemberDetails we have in our system mapped to policy:\n\n";
+ if(newObject.claims.length===0)
+ {
+    messageBody="No Claim Found for this MemberDetails Data";
+ }
+ else
+ {
+    for (let i = 0; i < newObjectmembers.members.length; i++) {
+        const members = members.claims[i];
+        messageBody += " *MemberName:* " + members.MemberName + "\n" +
+        " *MemberRelationship:* " + members.MemberRelationship + "\n" +
+        " *MemberAge:* " + members.MemberAge + "\n" +
+        " *MemberGender:* " + members.MemberGender + "\n" +
+        " *MemberPolicyNumber:* " + members.MemberPolicyNumber + "\n" +
+        " *UHID:* " + members.UHID + "\n" +
+        " *ValidTill:* " + members.ValidTill + "\n" +
+        " *ValidFrom:* " + members.ValidFrom + "\n" +
+        " *sumInsured:* " + members.sumInsured + "\n" +
+        " *address:* " + (members.address || "Not available") + "\n" +
+        " *MemberCardDispatchDate:* " + (members.MemberCardDispatchDate || "Not available") + "\n" +
+        " *dispatchRefNumber:* " + (members.dispatchRefNumber || "Not available") + "\n" +
+        " *balanceSumInsured:* " + members.balanceSumInsured + "\n" +
+        " *Photo:* " + members.Photo + "\n" +
+        " *InsuredID:* " + members.InsuredID + "\n" +
+        " *EcartURL:* " + members.EcartURL + "\n" +
+        " *DownloadURL:* " + members.DownloadURL + "\n"+"\n"+"-------------------------------"+"\n"+"\n";
+      }
+ }
+
+messageBody+= "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
+"If you want to access the previous menu, please type 'Menu OR Simply send as 4.\n\n" +
+"Best regards,\n" +
+"HiTPA Team";
+console.log(messageBody);
+        axios({
+            method: "POST",
+            url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
+            data: {
+              messaging_product: "whatsapp",
+              to: from,
+              text: {
+                body: messageBody,
+              }
+            },
+            headers: {
+              "Content-Type": "application/json"
+            }
+          });
+      })
+      .catch(error => {
+        // Handle any errors here
+        console.error(error);
+      });
+  }
 app.get("/sendtexttemplate",(req,res)=>{
 
     console.log("send text template is triggered");
@@ -211,7 +286,7 @@ app.post("/webhook", async (req, res) => {
         console.log(JSON.stringify(body_param, null, 2));
         if (body_param.object) {
           console.log("inside body param");
-        messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Ecards\n🏠 4. Main Menu\n👋 5. Exit\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
+       
         console.log("inside body param");
        let replytype =body_param.entry[0].changes[0].value.messages[0].type;
        let msg_body =null;
@@ -237,12 +312,32 @@ app.post("/webhook", async (req, res) => {
             console.log("boady param " + msg_body);
             console.log("messageBody " + messageBody);
             console.log("token " + token);
+
+            if(msg_body.trim().toLowerCase() === "5")
+            {
+                messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
+            }
+            else if(msg_body.trim().toLowerCase() === "4")
+            {
+              messageBody= "Sorry, we're unable to generate your ecard at the moment. Please try again later. We apologize for the inconvenience. If it's an emergency and you need immediate assistance, please contact our helpdesk.\n\nThank you for choosing Hitpa!"
+            }
+            else
+            {
+                messageBody="I'm sorry, it looks like your input was incorrect. Please make sure to follow the instructions and reply back with the corresponding number for the option you would like to access.\n\nHere are the options again:\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nIf youre still facing any issues, please contact our helpdesk for assistance.\n\nThank you for choosing Hitpa!";
+            }
+
+
+
             if (msg_body.trim().toLowerCase() === "1") {
                 await getpolicydetails(req, res);
               } 
               else if(msg_body.trim().toLowerCase() === "2")
               {
                 await getclaimdetails(req, res);
+              }
+              else if(msg_body.trim().toLowerCase() === "3")
+              {
+                await getmemberdetails(req, res);
               }
               else 
               {
