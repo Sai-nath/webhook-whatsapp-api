@@ -224,7 +224,7 @@ console.log(messageBody);
         " *Photo:* " + members.Photo + "\n" +
         " *InsuredID:* " + members.InsuredID + "\n" +
         " *EcartURL:* " + members.EcartURL + "\n" +
-        " *DownloadURL:* " + members.DownloadURL + "\n"+"\n"+"-------------------------------"+"\n"+"\n";
+        " *DownloadURL:* " + members.DownloadURL + "\n"+"\n"+"-------------------------"+"\n"+"\n";
       }
  }
 
