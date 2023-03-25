@@ -83,7 +83,7 @@ const getpolicydetails = async (req, res) => {
         "Sum Insured: " + mydata.SI + "\n" +
         "Benefit Sum Insured: " + mydata.BSI + "\n\n" +
         "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
-        "If you want to access the previous menu, please type 'MENU'.\n\n" +
+        "If you want to access the previous menu, please type 'MENU OR Simply send as 4.\n\n" +
         "Thank you for choosing " + mydata.CompanyName + " as your insurance provider.\n\n" +
         "Best regards,\n" +
         "HiTPA Team";
@@ -110,6 +110,68 @@ const getpolicydetails = async (req, res) => {
       });
   }
   
+  const getclaimdetails = async (req, res) => {
+    const axios = require('axios');
+    let body_param = req.body;
+    let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
+    let from = body_param.entry[0].changes[0].value.messages[0].from;
+    let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
+    console.log("inside body getpolicydetails");
+    console.log(msg_body);
+    // Set the API endpoint URL and request payload
+    const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
+    const data = {
+      // Your request payload goes here
+    };
+    // Set the request headers, if needed
+    const headers = {
+      // Your request headers go here
+    };
+    // Make the API call using axios
+    axios.get(url, data, { headers })
+      .then(response => {
+        // Handle the API response here
+        mydata = response.data;
+        const mydata = response.data;
+        const claims = mydata.PolicyDetails.claims;
+        const newObject = {claims};
+
+         messageBody = "Here are the details of all the claims we have in our system:\n\n";
+for (let i = 0; i < newObject.length; i++) {
+  const claim = newObject[i];
+  messageBody += `Claim ID: ${claim.ClaimID}\n`;
+  messageBody += `Policy ID: ${claim.PolicyID}\n`;
+  messageBody += `Claim Amount: ${claim.ClaimAmount}\n`;
+  messageBody += `Claim Status: ${claim.ClaimStatus}\n`;
+  messageBody += "\n"; // add a newline after each claim
+}
+messageBody+= "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
+"If you want to access the previous menu, please type 'MENU OR Simply send as 4.\n\n" +
+"Best regards,\n" +
+"HiTPA Team";
+// print the message to the console
+console.log(messageBody);
+        axios({
+            method: "POST",
+            url: "https://graph.facebook.com/v13.0/" + phon_no_id + "/messages?access_token=" + token,
+            data: {
+              messaging_product: "whatsapp",
+              to: from,
+              text: {
+                body: messageBody,
+              }
+            },
+            headers: {
+              "Content-Type": "application/json"
+            }
+          });
+       // res.send(messageBody);
+      })
+      .catch(error => {
+        // Handle any errors here
+        console.error(error);
+      });
+  }
 app.get("/sendtexttemplate",(req,res)=>{
 
     console.log("sendtexttemplate is triggered");
@@ -146,7 +208,7 @@ app.post("/webhook", async (req, res) => {
         console.log(JSON.stringify(body_param, null, 2));
         if (body_param.object) {
           console.log("inside body param");
-        messageBody="👋 Welcome to Hitpa! Please select an option:\n\n📝 1. Policy Data\n💳 2. Ecard\n📋 3. Claim Status\n🏠 4. Main Menu\n👋 5. Exit";
+        messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Ecards\n🏠 4. Main Menu\n👋 5. Exit\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with "1".\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
         console.log("inside body param");
        let replytype =body_param.entry[0].changes[0].value.messages[0].type;
        let msg_body =null;
@@ -175,6 +237,10 @@ app.post("/webhook", async (req, res) => {
             if (msg_body.trim().toLowerCase() === "1") {
                 await getpolicydetails(req, res);
               } 
+              else if(sg_body.trim().toLowerCase() === "2")
+              {
+                await getclaimdetails(req, res);
+              }
               else 
               {
             axios({
