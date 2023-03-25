@@ -111,6 +111,7 @@ const getpolicydetails = async (req, res) => {
   }
   
   const getclaimdetails = async (req, res) => {
+    let Claimdata =null;
     const axios = require('axios');
     let body_param = req.body;
     let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
@@ -131,9 +132,8 @@ const getpolicydetails = async (req, res) => {
     axios.get(url, data, { headers })
       .then(response => {
         // Handle the API response here
-        mydata = response.data;
-        const mydata = response.data;
-        const claims = mydata.PolicyDetails.claims;
+        Claimdata = response.data;
+        const claims = Claimdata.PolicyDetails.claims;
         const newObject = {claims};
 
          messageBody = "Here are the details of all the claims we have in our system:\n\n";
