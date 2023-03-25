@@ -29,7 +29,6 @@ app.get("/webhook",(req,res)=>{
         }else{
             res.status(403);
         }
-
     }
 
 });
@@ -42,19 +41,14 @@ const getpolicydetails = async (req, res) => {
     let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
     console.log("inside body getpolicydetails");
     console.log(msg_body);
-    // Set the API endpoint URL and request payload
     const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
     const data = {
-      // Your request payload goes here
     };
-    // Set the request headers, if needed
     const headers = {
-      // Your request headers go here
+      
     };
-    // Make the API call using axios
     axios.get(url, data, { headers })
       .then(response => {
-        // Handle the API response here
         mydata = response.data;
         messageBody = " Dear User Please Find Your Policy Data \n CustomerName:" + mydata.CustomerName + "\n" + "Policy No:" + mydata.PolicyNumber;
         messageBody = "Dear " + mydata.CustomerName + ",\n\nPlease find below your policy details:\n\n" +
@@ -102,70 +96,66 @@ const getpolicydetails = async (req, res) => {
               "Content-Type": "application/json"
             }
           });
-       // res.send(messageBody);
       })
       .catch(error => {
-        // Handle any errors here
         console.error(error);
       });
   }
   
-  const getclaimdetails = async (req, res) => {
+const getclaimdetails = async (req, res) => {
     let Claimdata =null;
     const axios = require('axios');
     let body_param = req.body;
     let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
     let from = body_param.entry[0].changes[0].value.messages[0].from;
     let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
-    console.log("inside body getpolicydetails");
     console.log(msg_body);
     // Set the API endpoint URL and request payload
     const url = 'http://223.30.163.105:91/api/EnrollmentInformation/GetMemberPolicyDetails?UHID=1418000002578701';
     const data = {
-      // Your request payload goes here
     };
-    // Set the request headers, if needed
     const headers = {
-      // Your request headers go here
     };
-    // Make the API call using axios
     axios.get(url, data, { headers })
       .then(response => {
-        // Handle the API response here
         Claimdata = response.data;
         const claims = Claimdata.PolicyDetails;
         const newObject = {claims};
-
  messageBody = "Here are the details of all the claims we have in our system:\n\n";
-for (let i = 0; i < newObject.claims.length; i++) {
-  const claim = newObject.claims[i];
-  messageBody+= "Claim ID: " + claim.ClaimID + "\n" + 
-  "Patient Name: " + claim.PatientName + "\n" + 
-  "Claim Type: " + claim.ClaimType + "\n" + 
-  "Claim Sub Type: " + claim.ClaimSubType + "\n" + 
-  "Preauth ID: " + claim.PreauthID + "\n" + 
-  "Claim Status: " + claim.ClaimStatus + "\n" + 
-  "Date Of Intimation: " + claim.DateOfIntimation + "\n" + 
-  "Diagnosis: " + claim.Diagnosis+ "\n" + 
-  "Claim No: " + claim.ClaimNo + "\n" + 
-  "Date Of Admission: " + claim.DateOfAdmission + "\n" + 
-  "Date Of Discharge: " + claim.DateOfDischarge + "\n" + 
-  "Hospital Name: " + claim.HospitalName + "\n" +
-  "Requested Amount: " + claim.RequestedAmount + "\n" + 
-  "Approved Amount: " + claim.ApprovedAmount + "\n" + 
-  "Rejected Amount: " + claim.RejectedAmount + "\n" + 
-  "Sum Insured: " + claim.SumInsured + "\n" + 
-  "Balance Sum Insured: " + claim.BalanceSumInsured + "\n" + 
-  "Total Sum Insured: " + claim.TotalSumInsured + "\n" + 
-  "Total Requested Amount: " + claim.TotalRequestedAmount + "\n" + 
-  "Total Approved Amount: " + claim.TotalApprovedAmount + "\n" + 
-  "Total Rejected Amount: " + claim.TotalRejectedAmount + "\n"+"\n"+"-------------------------------------------------"+"\n"+"\n";
-}
+ if(newObject.claims.length===0)
+ {
+    messageBody="No Claim Found for this policy Data";
+ }
+ else
+ {
+    for (let i = 0; i < newObject.claims.length; i++) {
+        const claim = newObject.claims[i];
+        messageBody+= "*Claim ID: *" + claim.ClaimID + "\n" + 
+        "*Patient Name: *" + claim.PatientName + "\n" + 
+        "Claim Type: " + claim.ClaimType + "\n" + 
+        "Claim Sub Type: " + claim.ClaimSubType + "\n" + 
+        "Claim Status: " + claim.ClaimStatus + "\n" + 
+        "Date Of Intimation: " + claim.DateOfIntimation + "\n" + 
+        "Diagnosis: " + claim.Diagnosis+ "\n" + 
+        "Date Of Admission: " + claim.DateOfAdmission + "\n" + 
+        "Date Of Discharge: " + claim.DateOfDischarge + "\n" + 
+        "Hospital Name: " + claim.HospitalName + "\n" +
+        "Requested Amount: " + claim.RequestedAmount + "\n" + 
+        "Approved Amount: " + claim.ApprovedAmount + "\n" + 
+        "Rejected Amount: " + claim.RejectedAmount + "\n" + 
+        "Sum Insured: " + claim.SumInsured + "\n" + 
+        "Balance Sum Insured: " + claim.BalanceSumInsured + "\n" + 
+        "Total Sum Insured: " + claim.TotalSumInsured + "\n" + 
+        "Total Requested Amount: " + claim.TotalRequestedAmount + "\n" + 
+        "Total Approved Amount: " + claim.TotalApprovedAmount + "\n" + 
+        "Total Rejected Amount: " + claim.TotalRejectedAmount + "\n"+"\n"+"-------------------------------"+"\n"+"\n";
+      }
+ }
+
 messageBody+= "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
-"If you want to access the previous menu, please type 'MENU OR Simply send as 4.\n\n" +
+"If you want to access the previous menu, please type 'Menu OR Simply send as 4.\n\n" +
 "Best regards,\n" +
 "HiTPA Team";
-// print the message to the console
 console.log(messageBody);
         axios({
             method: "POST",
@@ -181,20 +171,19 @@ console.log(messageBody);
               "Content-Type": "application/json"
             }
           });
-       // res.send(messageBody);
       })
       .catch(error => {
         // Handle any errors here
         console.error(error);
       });
   }
+
 app.get("/sendtexttemplate",(req,res)=>{
 
-    console.log("sendtexttemplate is triggered");
+    console.log("send text template is triggered");
     const axios = require('axios');
     axios.post('https://graph.facebook.com/v15.0/114396201588531/messages', {
       messaging_product: 'whatsapp',
-      //to: req.params.toNumber, // get the toNumber parameter from the URL
       to: '916309780970',
       type: 'template',
       template: {
@@ -217,8 +206,6 @@ app.get("/sendtexttemplate",(req,res)=>{
       });
     });
     
-
-
 app.post("/webhook", async (req, res) => {
         let body_param = req.body;
         console.log(JSON.stringify(body_param, null, 2));
