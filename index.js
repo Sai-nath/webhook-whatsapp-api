@@ -52,7 +52,7 @@ const getpolicydetails = async (req, res) => {
         mydata = response.data;
         messageBody = " Dear User Please Find Your Policy Data \n CustomerName:" + mydata.CustomerName + "\n" + "Policy No:" + mydata.PolicyNumber;
         messageBody = "Dear " + mydata.CustomerName + ",\n\nPlease find below your policy details:\n\n" +
-        "Member ID: " + mydata.MemberID + "\n" +
+        "*Member ID:*" + mydata.MemberID + "\n" +
         "Age: " + mydata.MemberAge + "\n" +
         "Gender: " + mydata.Gender + "\n" +
         "Address: " + (mydata.Address ?? "N/A") + "\n" +
@@ -130,8 +130,8 @@ const getclaimdetails = async (req, res) => {
  {
     for (let i = 0; i < newObject.claims.length; i++) {
         const claim = newObject.claims[i];
-        messageBody+= "*Claim ID: *" + claim.ClaimID + "\n" + 
-        "*Patient Name: *" + claim.PatientName + "\n" + 
+        messageBody+= "*Claim ID:*" + claim.ClaimID + "\n" + 
+        "*Patient Name:*" + claim.PatientName + "\n" + 
         "Claim Type: " + claim.ClaimType + "\n" + 
         "Claim Sub Type: " + claim.ClaimSubType + "\n" + 
         "Claim Status: " + claim.ClaimStatus + "\n" + 
