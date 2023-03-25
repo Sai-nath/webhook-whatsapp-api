@@ -283,40 +283,6 @@ app.post("/webhook", async (req, res) => {
         let body_param = req.body;
         console.log(JSON.stringify(body_param, null, 2));
         if (body_param.object) {
-          console.log("inside body param");
-       
-        console.log("inside body param");
-       let replytype =body_param.entry[0].changes[0].value.messages[0].type;
-       let msg_body =null;
-
-       if(msg_body.trim().toLowerCase() === "5")
-       {
-           messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
-       }
-       else if(msg_body.trim().toLowerCase() === "4")
-       {
-         messageBody= "Sorry, we're unable to generate your ecard at the moment. Please try again later. We apologize for the inconvenience. If it's an emergency and you need immediate assistance, please contact our helpdesk.\n\nThank you for choosing Hitpa!"
-       }
-       else if(msg_body.trim().toLowerCase() === "Menu")
-       {
-           messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
-       }
-      else if(replytype==="button")
-       {
-        if(replytype==="button")
-        {
-            msg_body =  body_param.entry[0].changes[0].value.messages[0].button.text;
-        }
-        else
-        {
-          msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
-        }
-       }
-       else
-       {
-           messageBody="I'm sorry, it looks like your input was incorrect. Please make sure to follow the instructions and reply back with the corresponding number for the option you would like to access.\n\nHere are the options again:\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nIf youre still facing any issues, please contact our helpdesk for assistance.\n\nThank you for choosing Hitpa!";
-       }
-     
           if (body_param.entry &&
             body_param.entry[0].changes &&
             body_param.entry[0].changes[0].value.messages &&
@@ -324,7 +290,36 @@ app.post("/webhook", async (req, res) => {
             let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
             let from = body_param.entry[0].changes[0].value.messages[0].from;
           
-           
+            let replytype =body_param.entry[0].changes[0].value.messages[0].type;
+            let msg_body =null;
+     
+            if(msg_body.trim().toLowerCase() === "5")
+            {
+                messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
+            }
+            else if(msg_body.trim().toLowerCase() === "4")
+            {
+              messageBody= "Sorry, we're unable to generate your ecard at the moment. Please try again later. We apologize for the inconvenience. If it's an emergency and you need immediate assistance, please contact our helpdesk.\n\nThank you for choosing Hitpa!"
+            }
+            else if(msg_body.trim().toLowerCase() === "Menu")
+            {
+                messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
+            }
+           else if(replytype==="button")
+            {
+             if(replytype==="button")
+             {
+                 msg_body =  body_param.entry[0].changes[0].value.messages[0].button.text;
+             }
+             else
+             {
+               msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
+             }
+            }
+            else
+            {
+                messageBody="I'm sorry, it looks like your input was incorrect. Please make sure to follow the instructions and reply back with the corresponding number for the option you would like to access.\n\nHere are the options again:\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nIf youre still facing any issues, please contact our helpdesk for assistance.\n\nThank you for choosing Hitpa!";
+            }
 
             console.log("phone number " + phon_no_id);
             console.log("from " + from);
