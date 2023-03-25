@@ -237,7 +237,7 @@ app.post("/webhook", async (req, res) => {
             if (msg_body.trim().toLowerCase() === "1") {
                 await getpolicydetails(req, res);
               } 
-              else if(sg_body.trim().toLowerCase() === "2")
+              else if(msg_body.trim().toLowerCase() === "2")
               {
                 await getclaimdetails(req, res);
               }
