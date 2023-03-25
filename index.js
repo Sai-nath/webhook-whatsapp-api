@@ -78,8 +78,8 @@ const getpolicydetails = async (req, res) => {
         "Corporate Company Name: " + mydata.CorporateCompanyName + "\n" +
         "Sum Insured: " + mydata.SI + "\n" +
         "Benefit Sum Insured: " + mydata.BSI + "\n\n" +
-        "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
-        "If you want to access the previous menu, please type 'MENU OR Simply send as 5.\n\n" +
+        "If you have any questions or concerns about your policy, please don't hesitate to contact us..CALL US on our toll free numbers. *Toll free numbers 1800 180 3600 / 1800 102 3600. Email us. customerservice@hitpa.co.in. Write to us.*\n\n" +
+        "If you want to access the previous menu, please type 'Simply send as 5.\n\n" +
         "Thank you for choosing " + mydata.CompanyName + " as your insurance provider.\n\n" +
         "Best regards,\n" +
         "HiTPA Team";
@@ -154,8 +154,8 @@ const getclaimdetails = async (req, res) => {
       }
  }
 
-messageBody+= "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
-"If you want to access the previous menu, please type 'Menu OR Simply send as 5.\n\n" +
+messageBody+= "If you have any questions or concerns about your policy, please don't hesitate to contact us..CALL US on our toll free numbers. *Toll free numbers 1800 180 3600 / 1800 102 3600. Email us. customerservice@hitpa.co.in. Write to us.*\n\n" +
+"If you want to access the previous menu, please type 'Simply send as 5.\n\n" +
 "Best regards,\n" +
 "HiTPA Team";
 console.log(messageBody);
@@ -226,8 +226,8 @@ console.log(messageBody);
       }
  }
 
-messageBody+= "If you have any questions or concerns about your policy, please don't hesitate to contact us.\n\n" +
-"If you want to access the previous menu, please type 'Menu OR Simply send as 5.\n\n" +
+messageBody+= "If you have any questions or concerns about your policy, please don't hesitate to contact us..CALL US on our toll free numbers. *Toll free numbers 1800 180 3600 / 1800 102 3600. Email us. customerservice@hitpa.co.in. Write to us.*\n\n" +
+"If you want to access the previous menu, please type 'Simply send as 5.\n\n" +
 "Best regards,\n" +
 "HiTPA Team";
 console.log(messageBody);
@@ -302,7 +302,7 @@ app.post("/webhook", async (req, res) => {
      
             if(msg_body.trim().toLowerCase() === "5")
             {
-                messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
+                messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n📋 2. Claim Details\n📋 3. Member Details\n📇 4. Ecards\n🏠 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask.CALL US on our toll free numbers. *Toll free numbers 1800 180 3600 / 1800 102 3600. Email us. customerservice@hitpa.co.in. Write to us.* Thank you for choosing Hitpa!";
             }
             else if(msg_body.trim().toLowerCase() === "4")
             {
@@ -310,7 +310,7 @@ app.post("/webhook", async (req, res) => {
             }
             else if(msg_body.trim().toLowerCase() === "Menu")
             {
-                messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
+                messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n📋 2. Claim Details\n📋 3. Member Details\n📇 4. Ecards\n🏠 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask.CALL US on our toll free numbers. Toll free numbers 1800 180 3600 / 1800 102 3600. Email us. customerservice@hitpa.co.in. Write to us. Thank you for choosing Hitpa!";
             }
      
             else
@@ -338,7 +338,7 @@ app.post("/webhook", async (req, res) => {
             }
             else
             {
-                messageBody="I'm sorry, it looks like your input was incorrect. Please make sure to follow the instructions and reply back with the corresponding number for the option you would like to access.\n\nHere are the options again:\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nIf youre still facing any issues, please contact our helpdesk for assistance.\n\nThank you for choosing Hitpa!";
+                messageBody="I'm sorry, it looks like your input was incorrect. Please make sure to follow the instructions and reply back with the corresponding number for the option you would like to access.\n\nHere are the options again:\n📝 1. Policy Data\n💳 2. Claim Details\n📋 3. Member Details\n🏠 4. Ecards\n👋 5. Main Menu\n\nIf youre still facing any issues, please contact our helpdesk for assistance.\n\n .CALL US on our toll free numbers. *Toll free numbers 1800 180 3600 / 1800 102 3600. Email us. customerservice@hitpa.co.in. Write to us.* \n\nThank you for choosing Hitpa!";
             }
 
 
