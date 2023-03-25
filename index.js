@@ -52,8 +52,8 @@ const getpolicydetails = async (req, res) => {
         mydata = response.data;
         messageBody = " Dear User Please Find Your Policy Data \n CustomerName:" + mydata.CustomerName + "\n" + "Policy No:" + mydata.PolicyNumber;
         messageBody = "Dear " + mydata.CustomerName + ",\n\nPlease find below your policy details:\n\n" +
-        "*Member ID:*" + mydata.MemberID + "\n" +
-        "Age: " + mydata.MemberAge + "\n" +
+        "*Member ID:* " + mydata.MemberID + "\n" +
+        " *Age:* " + mydata.MemberAge + "\n" +
         "Gender: " + mydata.Gender + "\n" +
         "Address: " + (mydata.Address ?? "N/A") + "\n" +
         "Email ID: " + mydata.EmailID + "\n" +
