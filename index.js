@@ -333,7 +333,7 @@ app.post("/webhook", async (req, res) => {
             {
               messageBody= "Sorry, we're unable to generate your ecard at the moment. Please try again later. We apologize for the inconvenience. If it's an emergency and you need immediate assistance, please contact our helpdesk.\n\nThank you for choosing Hitpa!"
             }
-            else if(msg_body.trim().toLowerCase() === "Menu")
+            else if(msg_body.trim().toLowerCase() === "menu")
             {
                 messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n📋 2. Claim Details\n📋 3. Member Details\n📇 4. Ecards\n🏠 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
             }
