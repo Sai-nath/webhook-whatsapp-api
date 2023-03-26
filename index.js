@@ -33,8 +33,6 @@ app.get("/webhook",(req,res)=>{
 
 });
 
-
-
 const getpolicydetails = async (req, res) => {
     const axios = require('axios');
     let body_param = req.body;
@@ -181,7 +179,7 @@ console.log(messageBody);
       });
   }
 
-  const getmemberdetails = async (req, res) => {
+const getmemberdetails = async (req, res) => {
     let Claimdata =null;
     const axios = require('axios');
     let body_param = req.body;
@@ -252,6 +250,65 @@ console.log(messageBody);
         console.error(error);
       });
   }
+
+
+ app.get("/sendinvitation",(req,res)=>{
+
+    console.log("send text template is triggered");
+    const axios = require('axios');
+    axios.post('https://graph.facebook.com/v15.0/114396201588531/messages',
+    {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": "916309780970",
+        "type": "template",
+        "template": {
+          "name": "update_to_user",
+          "language": {
+            "code": "en_GB"
+          },
+          "components": [
+               {
+              "type": "body",
+              "parameters": [
+                  
+              ]
+            },
+            {
+              "type": "header",
+              "parameters": [
+                {
+                  "type": "image",
+                  "image": {
+                    "link": "https://res.cloudinary.com/drnscazvh/image/upload/v1679682488/download_pxvwxv.png"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "sub_type": "quick_reply",
+              "index": "0"
+              
+            }
+          ]
+        }
+      }
+    , {
+      headers: {
+        'Authorization': 'Bearer '+token,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    });
+
+
 app.get("/sendtexttemplate",(req,res)=>{
 
     console.log("send text template is triggered");
@@ -280,6 +337,7 @@ app.get("/sendtexttemplate",(req,res)=>{
       });
     });
     
+  
 app.post("/webhook", async (req, res) => {
         let body_param = req.body;
         console.log(JSON.stringify(body_param, null, 2));
