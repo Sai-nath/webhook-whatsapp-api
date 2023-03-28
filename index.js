@@ -252,16 +252,16 @@ console.log(messageBody);
 
 
 
-app.get("/sendecard",(req,res)=>{
+  const sendecard =async (req, res) =>{
     let body_param = req.body;
-    let phon_no_id = body_param.entry[0].changes[0].value.metadata.phone_number_id;
+    let from = body_param.entry[0].changes[0].value.messages[0].from;
         console.log("send text template is triggered");
         const axios = require('axios');
         axios.post('https://graph.facebook.com/v15.0/114396201588531/messages',
         {
             "messaging_product": "whatsapp",
             "recipient_type": "individual",
-            "to": phon_no_id,
+            "to": from,
             "type": "template",
             "template": {
               "name": "template_ecard_send",
@@ -303,7 +303,7 @@ app.get("/sendecard",(req,res)=>{
           .catch(error => {
             console.error(error);
           });
-        });
+        };
 
 app.get("/sendtexttemplate",(req,res)=>{
     let body_param = req.body;
@@ -362,7 +362,7 @@ app.post("/webhook", async (req, res) => {
             }
             else if(msg_body.trim().toLowerCase() === "4")
             {
-                await sendecard(req, res);
+                //await sendecard(req, res);
               //messageBody= "Sorry, we're unable to generate your ecard at the moment. Please try again later. We apologize for the inconvenience. If it's an emergency and you need immediate assistance, please contact our helpdesk.\n\nThank you for choosing Hitpa!"
             }
             else if(msg_body.trim().toLowerCase() === "Menu")
