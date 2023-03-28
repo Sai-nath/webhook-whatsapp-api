@@ -250,9 +250,7 @@ console.log(messageBody);
       });
   }
 
-
-
-  const sendecard =async (req, res) =>{
+const sendecard =async (req, res) =>{
     let body_param = req.body;
     let from = body_param.entry[0].changes[0].value.messages[0].from;
         console.log("send text template is triggered");
@@ -360,11 +358,7 @@ app.post("/webhook", async (req, res) => {
             {
                 messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n📋 2. Claim Details\n📋 3. Member Details\n📇 4. Ecards\n🏠 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask.CALL US on our toll free numbers. *Toll free numbers 1800 180 3600 / 1800 102 3600. Email us. customerservice@hitpa.co.in. Write to us.* Thank you for choosing Hitpa!";
             }
-            else if(msg_body.trim().toLowerCase() === "4")
-            {
-                //await sendecard(req, res);
-              //messageBody= "Sorry, we're unable to generate your ecard at the moment. Please try again later. We apologize for the inconvenience. If it's an emergency and you need immediate assistance, please contact our helpdesk.\n\nThank you for choosing Hitpa!"
-            }
+        
             else if(msg_body.trim().toLowerCase() === "Menu")
             {
                 messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n📋 2. Claim Details\n📋 3. Member Details\n📇 4. Ecards\n🏠 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask.CALL US on our toll free numbers. Toll free numbers 1800 180 3600 / 1800 102 3600. Email us. customerservice@hitpa.co.in. Write to us. Thank you for choosing Hitpa!";
@@ -385,11 +379,7 @@ app.post("/webhook", async (req, res) => {
             {
                 messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n📋 2. Claim Details\n📋 3. Member Details\n📇 4. Ecards\n🏠 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
             }
-            else if(msg_body.trim().toLowerCase() === "4")
-            {
-                await sendecard(req, res);
-             // messageBody= "Sorry, we're unable to generate your ecard at the moment. Please try again later. We apologize for the inconvenience. If it's an emergency and you need immediate assistance, please contact our helpdesk.\n\nThank you for choosing Hitpa!"
-            }
+          
             else if(msg_body.trim().toLowerCase() === "menu")
             {
                 messageBody="Hello and welcome to Hitpa!\n\nTo get started, please select an option from the following menu:\n\n📝 1. Policy Data\n📋 2. Claim Details\n📋 3. Member Details\n📇 4. Ecards\n🏠 5. Main Menu\n\nTo select an option, please reply back with the corresponding number. For example, if you would like to access your policy data, please reply back with 1.\n\nWe're here to help, so if you have any questions or need assistance, please don't hesitate to ask. Thank you for choosing Hitpa!";
@@ -411,6 +401,11 @@ app.post("/webhook", async (req, res) => {
               else if(msg_body.trim().toLowerCase() === "3")
               {
                 await getmemberdetails(req, res);
+              }
+              else if(msg_body.trim().toLowerCase() === "4")
+              {
+                  await sendecard(req, res);
+               // messageBody= "Sorry, we're unable to generate your ecard at the moment. Please try again later. We apologize for the inconvenience. If it's an emergency and you need immediate assistance, please contact our helpdesk.\n\nThank you for choosing Hitpa!"
               }
               else 
               {
